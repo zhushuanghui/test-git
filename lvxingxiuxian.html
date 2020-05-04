@@ -919,14 +919,15 @@
         var hashInBase16 = hash.toString(CryptoJS.enc.Hex);
         return hashInBase16
     }
-    // $.ajax({
-    //   type:'GET',
-    //   url:url,
-    //   dataType:'jsonp',
-    //   success:function(res){
-    //   //   alert(getUrlParams('userId'));
-    //   // console.log(res,'333',getUrlParams('userId'))
-    // }})
+    // jsonp
+    $.ajax({
+      type:'GET',
+      url:url,
+      dataType:'jsonp',
+      success:function(res){
+      //   alert(getUrlParams('userId'));
+      // console.log(res,'333',getUrlParams('userId'))
+    }})
 
     //url = "https://irs.qq.com/partners/standardChannel?nonce=" + nonce + "&timestamp=" + timestamp + "&secretkey=" + secretkey + "&name=" + name + "&username=bazinga&params=" + params + "&site=news&num=10"
     $.ajax({
