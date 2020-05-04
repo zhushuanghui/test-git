@@ -1,0 +1,1073 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" target-densitydpi="device-dpi"
+        content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta http-equiv="Access-Control-Allow-Origin" content="*">
+  <link rel="stylesheet" type="text/css" href="iscroll/style/css/scrollbar.css">
+  <title>旅行休闲</title>
+  <style type="text/css" media="all">
+    ::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      background-color: #F5F5F5;
+    }
+
+    /*定义滚动条轨道 内阴影+圆角*/
+    ::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 0.16rem rgba(0, 0, 0, 0.3);
+      background: #fff;
+    }
+
+    /*定义滑块 内阴影+圆角*/
+    ::-webkit-scrollbar-thumb {
+      border-radius: 0.08rem;
+      -webkit-box-shadow: inset 0 0 0.16rem rgba(0, 0, 0, .3);
+      background-color: #40bbf4;
+    }
+
+    body, ul, li {
+      padding: 0;
+      margin: 0;
+      border: 0;
+    }
+
+    html {
+      max-width: 17.067rem;
+    }
+
+    body {
+      font-size: 0.32rem;
+      -webkit-user-select: none;
+      -webkit-text-size-adjust: none;
+      font-family: helvetica;
+    }
+
+    #footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1.28rem;
+      background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #999), color-stop(0.02, #666), color-stop(1, #222));
+      background-image: -moz-linear-gradient(top, #999, #666 2%, #222);
+      background-image: -o-linear-gradient(top, #999, #666 2%, #222);
+      padding: 0;
+      border-top: 0.027rem solid #444;
+    }
+
+    #wrapper {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fefefe;
+      overflow: auto;
+    }
+
+    #scroller {
+      position: relative;
+      /*	-webkit-touch-callout:none;*/
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      float: left;
+      width: 100%;
+      padding: 0;
+    }
+
+    #scroller ul {
+      position: relative;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      text-align: left;
+    }
+
+    #scroller li {
+      border-bottom: 0.027rem solid #f3f3f3;
+      border-top: 1px solid #fff;
+      font-size: 0.14rem;
+      position: relative;
+      width: 100%;
+    }
+
+    #scroller li > a {
+      display: block;
+    }
+
+    /**
+     *
+     * 下拉样式 Pull down styles
+     *
+     */
+    #pullUp {
+      display: none;
+    }
+
+    #pullDown, #pullUp {
+      background: none;
+      height: 0.3rem;
+      line-height: 0.3rem;
+      padding: 0.05rem 0.1rem;
+      border-bottom: 1px solid #ccc;
+      font-weight: normal;
+      font-size: 0.12px;
+      color: #999;
+    }
+
+    #pullDown .pullDownIcon, #pullUp .pullUpIcon {
+      display: block;
+      float: left;
+      width: 22px;
+      height: 22px;
+      background: url(iscroll/style/images/img/pull-icon@2x.png) 0 0 no-repeat;
+      -webkit-background-size: 100% auto;
+      background-size: 100% auto;
+      -webkit-transition-property: -webkit-transform;
+      -webkit-transition-duration: 250ms;
+    }
+
+    #pullDown .pullDownIcon {
+      -webkit-transform: rotate(0deg) translateZ(0);
+    }
+
+    #pullUp .pullUpIcon {
+      -webkit-transform: rotate(-180deg) translateZ(0);
+    }
+
+    #pullDown.flip .pullDownIcon {
+      -webkit-transform: rotate(-180deg) translateZ(0);
+    }
+
+    #pullUp.flip .pullUpIcon {
+      -webkit-transform: rotate(0deg) translateZ(0);
+    }
+
+    #pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
+      background-position: 0 100%;
+      -webkit-transform: rotate(0deg) translateZ(0);
+      -webkit-transition-duration: 0ms;
+
+      -webkit-animation-name: loading;
+      -webkit-animation-duration: 2s;
+      -webkit-animation-iteration-count: infinite;
+      -webkit-animation-timing-function: linear;
+    }
+
+    @-webkit-keyframes loading {
+      from {
+        -webkit-transform: rotate(0deg) translateZ(0);
+      }
+      to {
+        -webkit-transform: rotate(360deg) translateZ(0);
+      }
+    }
+
+    #pullUp, #pullDown {
+      text-align: center;
+    }
+
+    .pullUpIcon, .pullDownIcon {
+      display: inline-block !important;
+      float: inherit !important;
+      vertical-align: middle;
+    }
+
+    /* CSS Document */
+
+    * {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    body {
+      font-family: Microsoft YaHei, Arial;
+      font-size: 0.2rem;
+      background-color: #f2f2f2;
+    }
+
+    a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video, button {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+    ul, ol, li {
+      list-style: none;
+    }
+
+    a {
+      color: #5e5e5e;
+      text-decoration: none;
+    }
+
+    u {
+      text-decoration: none;
+    }
+
+    .scroll {
+      width: 100%;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mod_01 {
+      float: left;
+      width: 100%;
+    }
+
+    .mod_01 img {
+      display: inline-block;
+      width: 100%;
+      height: 1.96rem;
+    }
+
+    .dotModule_new {
+      padding: 0 0.05rem 0.05rem 0.05rem;
+      height: 0.11rem;
+      line-height: 0.06rem;
+      -webkit-border-radius: 0.11rem;
+      z-index: 11;
+      width: 12%;
+      float: right
+    }
+
+    #slide_01_dot {
+    }
+
+    #slide_01_dot span {
+      background: #c0a0d2;
+      /*border: #c0a0d2 1px solid ;*/
+      display: inline-block;
+      width: 0.05rem;
+      height: 0.05rem;
+      border-radius: 0.05rem;
+      margin-right: 0.05rem;
+    }
+
+    #slide_01_dot .selected {
+      background: #fff;
+    }
+
+    /* top */
+
+    .book_zhangjie1 {
+      margin-bottom: 0.05rem;
+    }
+
+    .book_zhangjie1 p {
+      margin-top: 0.06rem;
+    }
+
+    .tuijian img {
+      width: 0.3rem;
+      vertical-align: middle;
+      margin-right: 0.05rem;
+    }
+
+    .game img {
+      width: 0.25rem;
+      margin-right: 0.05rem;
+      margin-bottom: -0.05rem;
+    }
+
+    .app_neir {
+      width: 100%;
+      background-color: #fff;
+      font-size: 0.12rem;
+      color: #333;
+      display: flex;
+      flex-wrap: wrap;
+      padding-bottom: 0.07rem; /*margin-top:1em; white-space:nowrap;overflow-x:auto;overflow:auto;*/
+    }
+
+    .app_neir div {
+      width: .887rem;
+      text-align: center;
+      display: inline-block;
+      margin-top: 0.15rem;
+      color: #666;
+    }
+
+    .app_neir div a {
+      display: inline-block;
+      width: 0.48rem;
+      height: 0.48rem;
+      border-radius: 0.19rem;
+      margin-bottom: 0.05rem;
+    }
+
+    .app_neir div:nth-child(5) a img {
+      width: 100%;
+      border-radius: 0;
+      margin-top: 0;
+    }
+
+    .app_neir div:nth-child(6) a img {
+      width: 100%;
+      border-radius: 0;
+      margin-top: 0;
+    }
+
+    .app_neir div:nth-child(7) a img {
+      width: 100%;
+      border-radius: 0;
+      margin-top: 0;
+    }
+
+    .app_neir div:nth-child(8) a img {
+      width: 100%;
+      border-radius: 0;
+      margin-top: 0;
+    }
+
+    .app_neir img {
+      width: 100%;
+    }
+
+    .app_neir u {
+      font-size: 0.12rem;
+      color: #ababab;
+    }
+
+    .book_fenkai {
+      height: 0.625rem;
+      background: #f5f5f5;
+      border-bottom: 1px solid #d3d3d3;
+      border-top: 1px solid #e5e5e5;
+      clear: both;
+    }
+
+    .guangg img {
+      height: 1rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    * {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    li {
+      list-style: none
+    }
+
+    .guangg {
+      background: #696969 none repeat scroll 0 0;
+      position: fixed;
+      bottom: 0;
+      text-align: center;
+      width: 100%;
+      height: 0.5rem;
+      overflow: hidden;
+      margin: 0 auto;
+      border: 0 solid #ffffff;
+    }
+
+    /*overflow: hidden;white-space: nowrap;text-overflow: ellipsis; 控制字体在一行 超出部分显示省略号*/
+    .guangg a {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+      height: 0.5rem;
+      line-height: 0.5rem;
+      text-indent: 0.2rem;
+      color: #ffffff;
+      display: block;
+      text-decoration: none;
+    }
+
+    li {
+      list-style-type: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .left {
+      float: left;
+    }
+
+    .right {
+      float: right;
+    }
+
+    nav p {
+      text-align: center;
+    }
+
+    nav {
+      height: 0.5rem;
+      background-color: #009bdc;
+      color: #fff;
+      line-height: 0.48rem;
+      position: relative;
+    }
+
+    nav a {
+      margin-left: 3%;
+      padding-top: 0.1rem;
+      position: absolute;
+    }
+
+    nav span {
+      margin-right: 41%;
+    }
+
+    #banner {
+      position: relative;
+      overflow: hidden;
+    }
+
+    #banner img {
+      width: 100%;
+    }
+
+    #banner ul {
+      position: absolute;
+      bottom: 0.2rem;
+      left: 39%;
+    }
+
+    #banner ul li {
+      width: 0.1rem;
+      height: 0.1rem;
+      float: left;
+      border-radius: 50%;
+      margin-right: 0.12rem;
+      background-color: #fff;
+    }
+
+    #banner .color {
+      background-color: #f00;
+    }
+
+    #btns dl {
+      height: 1.35rem;
+      width: 25%;
+      float: left;
+      text-align: center;
+      margin-top: 0.1rem;
+    }
+
+    #btns dl:nth-child(5), #btns dl:nth-child(6), #btns dl:nth-child(7), #btns dl:nth-child(8) {
+      margin-top: 0.25rem;
+    }
+
+    #btns dl:last-child, #btns dl:nth-child(4) {
+      margin-right: 0;
+    }
+
+    #btns dl dt {
+      font-size: 0.2rem;
+      margin-top: 0.1rem;
+    }
+
+    #information {
+      background-color: #fff;
+      border-top: 5px solid #f3f3f3;
+      padding: 0 0.1rem;
+      -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .1);
+      -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .1);
+      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .1);
+    }
+
+    .title {
+      height: 0.44rem;
+      line-height: 0.44rem;
+      font-size: 0.18rem;
+      border-bottom: 1px solid #eee;
+      overflow: hidden;
+    }
+
+    .title .right {
+      color: #333;
+      font-size: 0.12rem;
+    }
+
+    .detail .right {
+      width: 65%;
+      padding-left: 2%;
+    }
+
+    .detail .left {
+      width: 33%;
+      height: 100%;
+      max-width: 1.2rem;
+      overflow: hidden;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+    }
+
+    .detail .right p {
+      height: 0.6rem;
+    }
+
+    .detail a {
+      font-size: 0.14rem;
+      line-height: 0.25rem;
+    }
+
+    .detail .right i {
+      display: inline-block;
+      width: 0.15rem;
+      height: 0.2rem;
+      background: url("iscroll/style/css/img/pic_39.png") no-repeat 100%;
+      margin-left: 0.5rem;
+      margin-right: 0.05rem;
+      vertical-align: middle;
+      position: absolute;
+      right: 0.57rem;
+      bottom: 0.1rem;
+    }
+
+    .detail li {
+      height: 0.85rem;
+      padding: 0.13rem 0;
+      overflow: hidden;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .detail span:last-child {
+      width: 0.5rem;
+      display: inline-block;
+    }
+
+    .detail span, .detail i {
+      font-size: 0.12rem;
+      color: #929292;
+      position: absolute;
+      bottom: 0.13rem;
+    }
+
+    .detail li .right span:last-child {
+      position: absolute;
+      bottom: 0.13rem;
+      right: 0.1rem;
+    }
+
+    .detail .left img {
+      height: 100%;
+    }
+
+    footer {
+      color: #929292;
+    }
+
+    #yingyong {
+      padding: 0 0.1rem;
+    }
+  </style>
+</head>
+<body>
+<div id="wrapper" style="min-height:5.30rem;">
+  <div id="scroller">
+    <!-- 下拉动画 -->
+    <div id="pullDown">
+      <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+    </div>
+    <div class="scroll">
+      <div class="slide_01" id="slide_01"></div>
+      <div class="slider-page"
+          style="position: absolute; bottom: 10px; right: 10px;">
+        <div id="slide_01_dot"></div>
+      </div>
+    </div>
+    <div>
+      <div class="book_zhangjie1" id="yingyong">
+        <div class="app_neir"></div>
+      </div>
+    </div>
+    <!-- 新闻 -->
+    <div id="information">
+      <div class="title">
+        <span class="left">新闻资讯</span>
+        <span class="right"><a href="http://op.inews.qq.com/mcms/h5?refer=100000069">更多 ></a></span>
+      </div>
+      <ul id="thelist" class="detail">
+        <!-- <li>
+          <div class="right">
+            <p><a href="javascript:void(0);">test</p></a>
+          </div>
+          <div class="left"><img src="https://inews.gtimg.com/newsapp_ls/0/11556583891_640330/0" alt=""></div>
+        </li>
+        <li>
+          <div class="right">
+            <p><a href="javascript:void(0);">test</p></a>
+          </div>
+          <div class="left"><img src="https://inews.gtimg.com/newsapp_ls/0/11556583891_640330/0" alt=""></div>
+        </li>
+        <li>
+          <div class="right">
+            <p><a href="javascript:void(0);">test</p></a>
+          </div>
+          <div class="left"><img src="https://inews.gtimg.com/newsapp_ls/0/11556583891_640330/0" alt=""></div>
+        </li> -->
+      </ul>
+    </div>
+    <!-- 上拉动画 -->
+    <div id="pullUp">
+      <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+    </div>
+  </div>
+</div>
+<script src="iscroll/style/js/jquery-1.11.3.min.js"></script>
+<script src="https://cdn.bootcss.com/crypto-js/4.0.0/core.min.js"></script>
+<script src="https://cdn.bootcss.com/crypto-js/4.0.0/hmac.js"></script>
+<script src="https://cdn.bootcss.com/crypto-js/4.0.0/sha256.min.js"></script>
+<script src="https://cdn.bootcss.com/crypto-js/4.0.0/enc-hex.min.js"></script>
+<script src="https://cdn.bootcss.com/crypto-js/4.0.0/enc-base64.min.js"></script>
+<script type="application/javascript" src="iscroll/style/js/iscroll.js"></script>
+<script type="text/javascript">
+  (function () {
+    // rem字体
+    var newRem = function () {
+      var html = document.documentElement;
+      console.log(html.getBoundingClientRect().width);
+      html.style.fontSize = html.clientWidth / 3.75 + 'px';
+    };
+    window.addEventListener('resize', newRem, false);
+    newRem();
+  })();
+  var myScroll,
+    pullDownEl, pullDownOffset,
+    pullUpEl, pullUpOffset,
+    generatedCount = 0;
+
+  function pullDownAction() {
+    setTimeout(function () {
+      var el, li, i;
+      el = document.getElementById('thelist');
+
+      for (i = 0; i < 3; i++) {
+        li = document.createElement('li');
+        li.innerText = 'Generated row ' + (++generatedCount);
+        el.insertBefore(li, el.childNodes[0]);
+      }
+
+      myScroll.refresh();
+    }, 1000);
+  }
+
+  function pullUpAction() {
+    setTimeout(function () {
+      aa();
+    }, 1000);
+  }
+
+  function loaded() {
+    pullDownEl = document.getElementById('pullDown');
+    pullDownOffset = pullDownEl.offsetHeight;
+    pullUpEl = document.getElementById('pullUp');
+    pullUpOffset = pullUpEl.offsetHeight;
+    myScroll = new iScroll('wrapper', {
+      scrollbarClass: 'myScrollbar',
+      useTransition: false,
+      topOffset: pullDownOffset,
+      onRefresh: function () {
+        if (pullDownEl.className.match('loading')) {
+          pullDownEl.className = '';
+          pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+        } else if (pullUpEl.className.match('loading')) {
+          pullUpEl.className = '';
+          pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+        }
+      },
+      onScrollMove: function () {
+        if (this.y > 5 && !pullDownEl.className.match('flip')) {
+          pullDownEl.className = 'flip';
+          pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+          this.minScrollY = 0;
+        } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+          pullDownEl.className = '';
+          pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+          this.minScrollY = -pullDownOffset;
+        } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+          pullUpEl.className = 'flip';
+          pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+          this.maxScrollY = this.maxScrollY;
+        } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+          pullUpEl.className = '';
+          pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+          this.maxScrollY = pullUpOffset;
+        }
+      },
+      onScrollEnd: function () {
+        if (pullDownEl.className.match('flip')) {
+          pullDownEl.className = 'loading';
+          pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+          pullDownAction();
+        } else if (pullUpEl.className.match('flip')) {
+          pullUpEl.className = 'loading';
+          pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+          pullUpAction();
+        }
+      }
+    });
+
+    setTimeout(function () {
+      document.getElementById('wrapper').style.left = '0';
+    }, 800);
+  }
+
+  document.addEventListener('touchmove', function (e) {
+//        e.preventDefault();
+  }, false);
+  document.addEventListener('DOMContentLoaded', loaded, false);
+
+  var contPath = "http://test.12306.cn.8686c.com/btgweb/appService";
+  var contPath = "http://ad.12306.cn/testsite";
+  // var contPath = "http://101.200.149.154:3999/sdk";
+  // var contPath = "https://ad.12306.cn/sdk";
+
+  var page = Math.floor(new Date().getTime() / 1000) + 1;
+  var datJson = "";
+  var TIME = "";
+  var uuid = "";
+  var data_0010 = "11";
+  var data_0011;
+  var u = navigator.userAgent;
+  var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+  var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+  var clientType = "1";
+  var url = "";
+  var readUrl = null;
+
+  //$(function () {
+  if (isIOS) {
+    clientType = "0";
+  }
+  getAd("0010"); //页面banner
+  getAd("0011");//导航
+  getAd("0017");//新闻列表
+  function imageSwipe() {
+    var width = $(document.body).width();
+    var height = 0.32 * width;
+    $(".homebanner,.mod_01,.mod_01 img").css("width", width);
+    $(".homebanner,.mod_01 img").css("height", height);
+    if (document.getElementById("slide_01")) {
+      var slide_01 = new ScrollPic();
+      slide_01.scrollContId = "slide_01";
+      slide_01.dotListId = "slide_01_dot";
+      slide_01.dotOnClassName = "selected";
+      slide_01.arrLeftId = "sl_left";
+      slide_01.arrRightId = "sl_right";
+      slide_01.frameWidth = width;
+      slide_01.pageWidth = width;
+      slide_01.upright = false;
+      slide_01.speed = 30;
+      slide_01.space = 50;
+      slide_01.autoPlay = true;
+      slide_01.autoPlayTime = 3;
+      slide_01.initialize();
+    }
+  }
+
+  function getAd(placementNo) {
+    $.ajax({
+      type: "get",
+      url: contPath + "/webservice/rest/appService/getAdAppInfo.json?placementNo=" + placementNo + "&clientType=" + clientType,
+      success: function (data) {
+        if (data != null) {
+          init(placementNo, data);
+        }
+      }
+    })
+  }
+
+  function init(placementNo, data) {
+    if (placementNo == "0010") {
+      var html = "";
+      var s = 0;
+      $.each(data.materialsList, function (i, n) {
+        html += "<div class='mod_01'>";
+        var linkUri = "#";
+        if (n.linkUri != null && n.linkUri != "") {
+          linkUri = n.linkUri;
+          html += "<a href='javascript:onClickAdsImage(\"" + placementNo + "\",\"" + n.billMaterialsId + "\",\"" + linkUri + "\")'><img src='" + n.filePath + "'></img></a>";
+          html += "</div>";
+        }
+        else {
+          html += "<a href='javascript:void(0)'><img src='" + n.filePath + "'></img></a>";
+          html += "</div>";
+        }
+        s++;
+      });
+      $("#slide_01").html(html);
+      if (s > 1) {
+        imageSwipe();
+      } else {
+        $(".homebanner,.mod_01 img").css("height", 0.32 * $(document.body).width());
+      }
+
+    } else if (placementNo == "0011") {
+      var html = "";
+      $.each(data.materialsList, function (i, n) {
+        var linkUri = "#";
+        if (n.linkUri != null && n.linkUri != "") {
+          linkUri = n.title === '阅读' ? (n.linkUri + encodeURIComponent(getUrlParams('userId'))) : n.linkUri;
+          //linkUri = n.linkUri;
+          html += "<div><a href='javascript:onClickAdsImage(\"" + placementNo + "\",\"" + n.billMaterialsId + "\",\"" + linkUri + "\")'><img src='" + n.filePath + "'/></a><br/>" + n.title + "<br/><u></u></div>";
+        }
+        else {
+          linkUri = 'javascript:void(0)';
+          html += "<div><a href='javascript:void(0)'><img src='" + n.filePath + "'/></a><br/>" + n.title + "<br/><u></u></div>";
+        }
+      });
+      $("#yingyong").children(".app_neir").append(html);
+
+    } else if (placementNo == "0017") {
+      $.each(data.materialsList, function (i, n) {
+        if (n.linkUri) {
+          url = n.linkUri;
+          aa(url);
+        } else {
+          $("#pullUp").css("display", "none");
+          $("#information").css("display", "none");
+        }
+      });
+    }
+  }
+
+  function getUrlParams(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); //定义正则表达式
+    var r = window.location.search.substr(1).match(reg) || null;
+
+    if (r !== null) {
+      return r[0].replace('&', '');
+    }
+    return null;
+  }
+
+  function liulan(placementNo, billMaterialsId) {
+    $.ajax({
+      type: "get",
+      url: contPath + "/appService/webservice/rest/appService/btnview.json?placementNo=" + placementNo + "&clientType=" + clientType + "&billMaterialsId=" + billMaterialsId + "&ip=" + uuid,
+      success: function (data) {
+      }
+    })
+  }
+
+  function onClickAdsImage(placementNo, billMaterialsId, targetUrl) {
+
+    /*if (isIOS) {
+      location.href = "bontaiads://onClickAdsImage?id=" + billMaterialsId + "&targetUrl=" + encodeURIComponent(targetUrl);
+    } else if (isAndroid) {
+      window.bontaiAndroidJS.onClickAdsImage(billMaterialsId, targetUrl);
+    }
+    if (billMaterialsId)
+        dianji(placementNo, billMaterialsId);
+        //window.open(targetUrl);
+        window.location.href = targetUrl;
+    */
+
+    if (isIOS) {
+      window.location.href = targetUrl;
+    } else if (isAndroid) {
+      if (window.bontaiAndroidJS) {
+        window.bontaiAndroidJS.onClickAdsImage(billMaterialsId, targetUrl);
+      } else {
+        window.location.href = targetUrl;
+      }
+    }
+
+    if (billMaterialsId)
+      dianji(placementNo, billMaterialsId);
+  }
+
+  function dianji(placementNo, billMaterialsId) {
+    $.ajax({
+      type: "get",
+      url: contPath + "/appService/webservice/rest/appService/btnhui.json?placementNo=" + placementNo + "&clientType=" + clientType + "&billMaterialsId=" + billMaterialsId + "&ip=" + uuid,
+      success: function (data) {
+      }
+    })
+  }
+
+  function loadAdsSuccess(backuuid) {
+    uuid = backuuid;
+  }
+
+  function autoScroll(obj) {
+    $(obj).find("ul").animate({
+      marginTop: "-50"
+    }, 500, function () {
+      $(this).css({marginTop: "0"}).find("li:first").appendTo(this);
+    })
+  }
+
+  function getOtherData() {
+    $.ajax({
+      type: "get",  
+      url: "http://101.200.149.154/lyxx/webservice/rest/lyxxService/getTunXunData.json",
+      success: function (data) {
+        if (data != null && data.ret == 0) {
+          var html_other = "";
+          $.each(data.newslist, function (i, n) {
+            html_other += "<li><a  href='javascript:;' onclick=onClickAdsImage('','" + n.timestamp + "','" + n.url + "')>" + n.title + "</a></li>";
+          });
+
+          $(".other_data").html(html_other);
+          myScroll.refresh();
+          setInterval('autoScroll(".guangg")', 3000);
+        }
+
+      }
+    })
+  }
+  
+
+  function aa(url) {
+    var url_1 = url.split("\" + page + \"");
+    var url = url_1[0] + page + url_1[1];
+    // var appkey = 'tielu12306_15154ce3739b46aa';
+    // var params = encodeURIComponent('ADTAG%3d tielu12306%26pgv_ref%3d tielu12306');
+    // var name = 'tielu12306';
+    // var nonce = '12306';
+    // var timestamp = new Date().getTime();
+    // var secretkey = getSecretKey();
+
+    function getSecretKey() {
+        // var val = document.getElementById('pwd').value;
+        var hash = CryptoJS.HmacSHA256(nonce + timestamp, appkey);
+        var hashInBase16 = hash.toString(CryptoJS.enc.Hex);
+        return hashInBase16
+    }
+    // $.ajax({
+    //   type:'GET',
+    //   url:url,
+    //   dataType:'jsonp',
+    //   success:function(res){
+    //   //   alert(getUrlParams('userId'));
+    //   // console.log(res,'333',getUrlParams('userId'))
+    // }})
+
+    //url = "https://irs.qq.com/partners/standardChannel?nonce=" + nonce + "&timestamp=" + timestamp + "&secretkey=" + secretkey + "&name=" + name + "&username=bazinga&params=" + params + "&site=news&num=10"
+    $.ajax({
+      async : true,
+      url :url,
+      type : "GET",
+      dataType : "jsonp", // 返回的数据类型，设置为JSONP方式
+      //jsonp : 'callback', //指定一个查询参数名称来覆盖默认的 jsonp 回调参数名 callback
+      //jsonpCallback: 'handleResponse', //设置回调函数名
+      success: function(response, status, xhr){
+          console.log('状态为：' + status + ',状态是：' + xhr.statusText);
+          console.log(response);
+          // if(response.code === 35){
+          //   $('.detail').html('抱歉，暂时没有数据!');
+          //   return;
+          // }
+          response.code === 0 ? renderNewsHtml(response.result) : null;
+      }
+    });
+
+
+    function renderNewsHtml(newsList){
+      if (newsList.length) {
+        newsHtml = '';
+          // for(var i = 0; i < 5 ; i++){ 
+          //   newsList.push(newsList[0]);
+          // }
+        $.each(newsList, function (i, newsItem) {
+          var title = newsItem.title;
+          title = title.length >= 20 ? title.slice(0, 21) + "..." : title;
+          
+          if (newsItem.article_type == 1) {
+            newsHtml = '<li onclick="onClickAdsImage(null, null, \'' + newsItem.url + '\')"><div class="right"><p><a href="javascript:void(0);">' + title + '</p></a>' +
+              '<span>' + newsItem.source + '</span><i></i><span>' + newsItem.comment_num + '</span></div>' +
+              '<div class="left"><img src="' + newsItem.multi_imgs[0] + '"/></div></li>';
+          } else {
+            newsHtml = '<li onclick="onClickAdsImage(null, null, \'' + newsItem.url + '\')"><div class="right"><p><a href="javascript:void(0);">' + title + '</p></a>' +
+              '<span>' + newsItem.source + '</span><i></i><span>' + newsItem.comment_num + '</span></div>' +
+              '<div class="left"><img src="' + newsItem.img + '"/></div></li>';
+          }
+          $(".detail").append(newsHtml);
+        });
+      } else {
+        $(".pullUpIcon").hide();
+        $(".pullUpLabel").html("没有更多了~");
+      }
+      $("#pullUp").css("display", "block");
+      $("#information").css("display", "block");
+      myScroll.refresh();
+    }
+
+
+    return;//以下是旧版
+
+    $.get(url, function (json) {
+      json = $.parseJSON(json);
+      if(!json) return;
+      var html_other = "";
+      page = json.data.list ? json.data.list[json.data.list.length - 1].content.timestamp - 1 : null;
+
+      // (json.data.list.length != undefined && json.data.list.length > 0) 
+      if (json.data.list.length) {
+        $.each(json.data.list, function (i, n) {
+          var title = n.content.title;
+          if (n.content.title.length >= 20) {
+            title = n.content.title.slice(0, 21) + "...";
+          }
+          if (n.content.articletype == 1) {
+            html_other = '<li onclick="onClickAdsImage(null, null, \'' + n.content.url + '\')"><div class="right"><p><a href="javascript:void(0);">' + title + '</p></a>' +
+              '<span>' + n.content.src + '</span><i></i><span>' + n.content.comment_count + '</span></div>' +
+              '<div class="left"><img src="' + "https://lhjmobile.oss-cn-beijing.aliyuncs.com/20200408%2F991220817323402c85b2d4ea8bbe8d9e" + '"/></div></li>';
+          } else {
+            html_other = '<li onclick="onClickAdsImage(null, null, \'' + n.content.url + '\')"><div class="right"><p><a href="javascript:void(0);">' + title + '</p></a>' +
+              '<span>' + n.content.src + '</span><i></i><span>' + n.content.comment_count + '</span></div>' +
+              '<div class="left"><img src="' + n.content.image32 + '"/></div></li>';
+          }
+          $(".detail").append(html_other);
+        });
+      } else {
+        $(".pullUpIcon").hide();
+        $(".pullUpLabel").html("没有更多了~");
+      }
+      $("#pullUp").css("display", "block");
+      $("#information").css("display", "block");
+      myScroll.refresh();
+    });
+  }
+
+  //======================================================//
+  var myScroll,
+    pullDownEl, pullDownOffset,
+    pullUpEl, pullUpOffset,
+    generatedCount = 0;
+
+  /*
+   * 下拉刷新
+   */
+  function pullDownAction() {
+    setTimeout(function () {
+      location.reload();
+      myScroll.refresh();
+    }, 1000);
+  }
+
+  function pullUpAction() {
+    setTimeout(function () {
+      aa(url);
+      myScroll.refresh();
+    }, 1000);
+  }
+  window.url = url;
+</script>
+<!-- <script type="text/javascript" src="url"> </script> -->
+</body>
+</html>
