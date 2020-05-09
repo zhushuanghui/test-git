@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-05-06 10:46:38
- * @LastEditTime: 2020-05-06 13:28:14
+ * @LastEditTime: 2020-05-07 17:42:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Editthis
  * @FilePath: /ad_lvxingxiuxian/test-git/test.html
@@ -12,6 +12,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .box{
+      height: 150vh;
+    }
+  </style>
 </head>
 <body>
   <div class="box">
@@ -22,5 +27,257 @@
     * @FilePath: /ad_lvxingxiuxian/test-git/test.html
     <span>hahahhhgit</span>
   </div>
+  <script>
+    // var obj = new Proxy({}, {
+    //   get: function (target, propKey, receiver) {
+    //     console.log(`getting ${propKey}!`);
+    //     return Reflect.get(target, propKey, receiver);
+    //   },
+    //   set: function (target, propKey, value, receiver) {
+    //     console.log(target, propKey, value, receiver)
+    //     return Reflect.set(target, propKey, value, receiver);
+    //   }
+    // });
+    // class Point {
+    //   constructor(x, y ){
+    //     console.log(this)
+    //     this.x = 'p' + x;
+    //     this.y = 'p' + y
+    //   }
+
+    //   toString(){
+    //     return this.x + this.y
+    //   }
+    // }
+    // class ColorPoint extends Point {
+    //   constructor(x, y, color) {
+    //     super(x, y); // 调用父类的constructor(x, y)
+    //     console.log(this)
+    //     this.color = color;
+    //   }
+      
+    //   a = 4
+
+    //   toString() {
+    //     return this.color + ' ' + super.toString(); // 调用父类的toString()
+    //   }
+    // }
+
+    // let c = new ColorPoint(10, 20, 'red');
+      function fn(){
+        console.log('fn')
+      }
+
+      // window.onscroll = throttle(fn);
+
+    //防抖 截流
+    function debounce(fn) { 
+      let timer = null
+      return ()=>{
+        clearTimeout(timer)
+        timer = setTimeout(()=>{
+          console.log('debounce',);   
+          fn.apply(this,[...arguments])
+        },3000)
+      }
+    }
+
+    function throttle (fn){
+      let canRun = true;
+      return () => {
+        if(!canRun) return
+        canRun = false
+        let timer =setTimeout(function(){
+            console.log('throttle')
+            fn.apply(this,arguments);
+            canRun = true;
+            clearTimeout(timer);
+          },1000)
+      }
+    }
+    let bodyAry = [];
+    let optionList = [{title:'type',content:['apple', 'huawei']},{title:'color',content:['red', 'green', 'white']},{title:'size', content:['23', '25', '28','40']}]
+    function createTbody(index, current) {
+    if (index < optionList.length - 1) {
+        var item = optionList[index];
+        if (!item) {
+            item = { title: '', content: [] }
+            console.log(index,'item 不存在')
+            createTbody(index + 1, current);
+        }
+        var title = item.title;
+        var content = item.content;
+        if (content.length == 0) {
+            console.log(index,'content 长度为0')
+            createTbody(index + 1, current);
+        }
+        for (var i = 0; i < content.length; i++) {
+            if (!content[i]) continue;
+            var newMap = {};
+            newMap = Object.assign(newMap, current);
+            newMap[title] = content[i];
+            console.log(index,newMap,bodyAry);
+            createTbody(index + 1, newMap);
+        }
+        } 
+      else if (index == optionList.length - 1) {
+        var item = optionList[index];
+        var title = item.title;
+        var content = item.content;
+        if (content.length == 0) {
+            bodyAry.push(current);
+        }
+        for (var i = 0; i < content.length; i++) {
+            if (!content[i]) continue;
+            var newMap = {};
+            newMap = Object.assign(newMap, current);
+            newMap[title] = content[i];
+            bodyAry.push(newMap);
+        }
+    }
+    return bodyAry
+}
+
+//createTbody(0, {});
+let sku = [];
+function createSku (index, current){
+  if(index < optionList.length -1) {
+  // if(!Object.keys(optionList[index]).length) return
+  let title = optionList[index].title;
+  let content = optionList[index].content;
+  if (!content.length) {
+    createSku(index+1,current)
+  }
+  content.forEach((item, idx) => {
+    // if(!item) continue
+    let temp = {};
+    temp[title] = item
+    temp = Object.assign(temp, current) 
+    console.log(item, index)
+    createSku(index+1,temp)
+  });
+  }else if(index == optionList.length -1){
+    let title = optionList[index].title;
+    let content = optionList[index].content;
+    if(!content.length){
+      sku.push(current)
+    }else{
+      content.forEach((item, idx) => {
+        // if(!item) continue;
+        let temp = {};
+        temp[title] = item
+        temp = Object.assign(temp, current)
+        sku.push(temp)
+      }); 
+    }
+  }
+  return sku
+}
+
+// sku = createSku(0,{});
+// console.log(sku)
+
+
+function Ofo() {}
+
+function Bick() {
+	this.name = 'mybick'
+}
+Ofo.prototype = new Bick()
+
+var myBick = new Ofo()
+
+
+
+var youbick = new Bick()
+
+// console.log(myBick.name)
+
+// console.log(youbick.name)
+
+function render(vdom) {
+  // 如果是字符串或者数字，创建一个文本节点
+  if (typeof vdom === 'string' || typeof vdom === 'number') {
+    return document.createTextNode(vdom)
+  }
+  const { tag, props, children } = vdom
+  // 创建真实DOM
+  const element = document.createElement(tag)
+  // 设置属性
+  setProps(element, props)
+  // console.log(tag, props, children)
+  // 遍历子节点，并获取创建真实DOM，插入到当前节点
+  children
+    .map(render)
+    .forEach(element.appendChild.bind(element))
+
+  // 虚拟 DOM 中缓存真实 DOM 节点
+  vdom.dom = element
+
+  // 返回 DOM 节点
+  return element
+}
+
+function setProps (element, props) {
+  Object.entries(props).forEach(([key, value]) => {
+    setProp(element, key, value)
+  })
+}
+
+function setProp (element, key, vlaue) {
+  element.setAttribute(
+    // className使用class代替
+    key === 'className' ? 'class' : key,
+    vlaue
+  )
+}
+
+
+const element = {
+  tag: 'div',
+  props: {
+    id: 'app'
+  },
+  children: [
+    {
+      tag: 'p',
+      props: {
+        className: 'text'
+      },
+      children: [
+        'hello world!!!'
+      ]
+    }
+  ]
+}
+
+class Component {
+  vdom = null // 组件的虚拟DOM表示
+  $el  = null // 虚拟DOM生成的真实节点
+
+  state = {
+    text: 'Initialize the Component'
+  }
+
+  render() {
+    const { text } = this.state
+    return (
+      <div>{ text }</div>
+    )
+  }
+}
+
+function createElement (app, component) {
+  const vdom = component.render()
+  component.vdom = vdom
+  component.$el = render(vdom) // 将虚拟 DOM 转换为真实 DOM
+  app.appendChild(component.$el)
+}
+
+const app = document.getElementById('app')
+const component = new Component
+createElement(app, component)
+console.log(createElement(app, component));
+  </script>
 </body>
 </html>
